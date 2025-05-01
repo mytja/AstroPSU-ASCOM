@@ -1,11 +1,9 @@
-﻿// TODO fill in this information for your driver, then remove this line!
+﻿// ASCOM Switch hardware class for mytjaAstroPSU
 //
-// ASCOM Switch hardware class for mytjaAstroPSU
+// Description:	 ASCOM driver for AstroPSU Pico - the open source/OSHW basic yet extendable astronomy power supply
 //
-// Description:	 <To be completed by driver developer>
-//
-// Implements:	ASCOM Switch interface version: <To be completed by driver developer>
-// Author:		(XXX) Your N. Here <your@email.here>
+// Implements:	ASCOM Switch interface version: 2.0 (I think)
+// Author:		Mitja Ševerkar <mitja@severkar.eu>
 //
 
 using System;
@@ -47,8 +45,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
         internal static string comPortDefault = "COM1";
         internal static string traceStateProfileName = "Trace Level";
         internal static string traceStateDefault = "false";
+        internal static bool showGps = true;
 
-        const bool ENABLE_GPS = false;
+        const bool ENABLE_GPS = true;
 
         // Variables to hold the current device configuration
         internal static bool autoDetectComPort = Convert.ToBoolean(autoDetectComPortDefault);
@@ -56,7 +55,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
         internal static string comPortOverride = comPortDefault;
 
         private static string DriverProgId = ""; // ASCOM DeviceID (COM ProgID) for this driver, the value is set by the driver's class initialiser.
-        private static string DriverDescription = ""; // The value is set by the driver's class initialiser.
+        private static string DriverDescription = "ASCOM driver for AstroPSU Pico - basic yet extensible OSHW astronomy power supply"; // The value is set by the driver's class initialiser.
         internal static string comPort; // COM port name (if required)
         private static bool connectedState; // Local server's connected state
         private static bool runOnce = false; // Flag to enable "one-off" activities only to run once.
@@ -243,7 +242,6 @@ namespace ASCOM.mytjaAstroPSU.Switch
         /// Deterministically release both managed and unmanaged resources that are used by this class.
         /// </summary>
         /// <remarks>
-        /// TODO: Release any managed or unmanaged resources that are used in this class.
         /// 
         /// Do not call this method from the Dispose method in your driver class.
         ///
@@ -335,6 +333,8 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                     if (!System.IO.Ports.SerialPort.GetPortNames().Contains(comPort))
                     {
+                        if (!(objSerial is null)) objSerial.Connected = false;
+                        connectedState = false;
                         throw new InvalidValueException("Invalid COM port", comPort.ToString(), String.Join(", ", System.IO.Ports.SerialPort.GetPortNames()));
                     }
 
@@ -390,6 +390,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                     for (int id = 0; id < switches.Count; id++)
                     {
+                        if (switches[id].InternalID == "AUTODEW") continue;
                         if (!switches[id].InternalID.StartsWith("DEW") || switches[id].InternalID.Contains("_"))
                         {
                             continue;
@@ -401,7 +402,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                     for (int id = 0; id < switches.Count; id++)
                     {
-                        if (!switches[id].InternalID.StartsWith("DC") || switches[id].InternalID.Contains("_"))
+                        if (!(switches[id].InternalID.StartsWith("DC") || switches[id].InternalID == "AUTODEW") || switches[id].InternalID.Contains("_"))
                         {
                             continue;
                         }
@@ -409,6 +410,29 @@ namespace ASCOM.mytjaAstroPSU.Switch
                         switches[id].Value = int.Parse(objSerial.ReceiveTerminated("\n").Trim());
                         switches[id].InSync = true;
                     }
+
+                    /*
+                    for (int id = 0; id < switches.Count; id++)
+                    {
+                        if (!switches[id].InternalID.StartsWith("DC") && !switches[id].InternalID.StartsWith("DEW"))
+                        {
+                            continue;
+                        }
+                        if (switches[id].InternalID.Contains("_"))
+                        {
+                            continue;
+                        }
+                        objSerial.Transmit($"NAMEGET;{switches[id].InternalID}\n");
+                        String name = objSerial.ReceiveTerminated("\n").Trim();
+                        if (name == "")
+                        {
+                            continue;
+                        }
+
+                        switches[id].Name = name;
+                        switches[id].InSync = true;
+                    }
+                    */
 
                     connectedState = true;
 
@@ -447,8 +471,10 @@ namespace ASCOM.mytjaAstroPSU.Switch
                     try
                     {
                         objSerial.Transmit($"ADCGET;{switches[i].InternalID}\n");
+                        int digits = 2;
+                        if (switches[i].InternalID.Contains("GPS")) digits = 5;
                         // CultureInfo.InvariantCulture je potreben, ker je C# retarded
-                        switches[i].Value = Math.Round(float.Parse(objSerial.ReceiveTerminated("\n").Trim(), CultureInfo.InvariantCulture), 2);
+                        switches[i].Value = Math.Round(float.Parse(objSerial.ReceiveTerminated("\n").Trim(), CultureInfo.InvariantCulture), digits);
                     }
                     catch (Exception er)
                     {
@@ -466,7 +492,6 @@ namespace ASCOM.mytjaAstroPSU.Switch
         /// <value>The description.</value>
         public static string Description
         {
-            // TODO customise this device description if required
             get
             {
                 LogMessage("Description Get", DriverDescription);
@@ -521,7 +546,6 @@ namespace ASCOM.mytjaAstroPSU.Switch
         /// </summary>
         public static string Name
         {
-            // TODO customise this device name as required
             get
             {
                 string name = "AstroPSU-ASCOM";
@@ -532,8 +556,8 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
         #endregion
 
+        internal static List<LocalSwitch> allSwitches;
         internal static List<LocalSwitch> switches;
-        internal static Dictionary<String, int> internalIdMap;
 
         internal static void Send(string value)
         {
@@ -555,7 +579,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             get
             {
                 LogMessage("MaxSwitch Get", numSwitch.ToString());
-                return numSwitch;
+                return (short)switches.Count;
             }
         }
 
@@ -815,9 +839,28 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 driverProfile.DeviceType = "Switch";
                 tl.Enabled = Convert.ToBoolean(driverProfile.GetValue(DriverProgId, traceStateProfileName, string.Empty, traceStateDefault));
                 comPort = driverProfile.GetValue(DriverProgId, comPortProfileName, string.Empty, comPortDefault);
+                showGps = bool.Parse(driverProfile.GetValue(DriverProgId, "gps_show", string.Empty, "true"));
 
                 switches = new List<LocalSwitch>();
-                LoadDefaultSwitches();
+                allSwitches = LoadDefaultSwitches();
+                for (int i = 0; i < allSwitches.Count; i++)
+                {
+                    if (!showGps && allSwitches[i].InternalID.Contains("GPS"))
+                    {
+                        continue;
+                    }
+                    if (!allSwitches[i].CanSetName)
+                    {
+                        switches.Add(allSwitches[i]);
+                        continue;
+                    }
+                    allSwitches[i].Name = driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_name", string.Empty, allSwitches[i].Name);
+                    bool hide = bool.Parse(driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", string.Empty, "false"));
+                    allSwitches[i].Hide = hide;
+                    if (!hide) switches.Add(allSwitches[i]);
+                }
+                numSwitch = (short)switches.Count;
+
             }
         }
 
@@ -831,44 +874,57 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 driverProfile.DeviceType = "Switch";
                 driverProfile.WriteValue(DriverProgId, traceStateProfileName, tl.Enabled.ToString());
                 driverProfile.WriteValue(DriverProgId, comPortProfileName, comPort.ToString());
+                for (int i = 0; i < allSwitches.Count; i++) {
+                    if (!allSwitches[i].CanSetName)
+                    {
+                        continue;
+                    }
+                    driverProfile.WriteValue(DriverProgId, $"{allSwitches[i].InternalID}_name", allSwitches[i].Name);
+                    driverProfile.WriteValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", allSwitches[i].Hide.ToString());
+                }
+                driverProfile.WriteValue(DriverProgId, "gps_show", showGps.ToString());
             }
         }
 
-        private static void LoadDefaultSwitches()
+        public static List<LocalSwitch> LoadDefaultSwitches()
         {
-            switches.Add(new LocalSwitch("DC1", "DC1") { Description = "DC1 switch" });
-            switches.Add(new LocalSwitch("DC2", "DC2") { Description = "DC2 switch" });
-            switches.Add(new LocalSwitch("DC3", "DC3") { Description = "DC3 switch" });
-            switches.Add(new LocalSwitch("DC4", "DC4") { Description = "DC4 switch" });
-            switches.Add(new LocalSwitch("DC5", "DC5") { Description = "DC5 switch" });
-            switches.Add(new LocalSwitch("DEW1 [%]", "DEW1", 100, 0, 0.01, 0) { Description = "Dew heater 1; adjustable PWM output; from 0 to 100" });
-            switches.Add(new LocalSwitch("DEW2 [%]", "DEW2", 100, 0, 0.01, 0) { Description = "Dew heater 2; adjustable PWM output; from 0 to 100" });
-            switches.Add(new LocalSwitch("DEW3 [%]", "DEW3", 100, 0, 0.01, 0) { Description = "Dew heater 3; adjustable PWM output; from 0 to 100" });
-            switches.Add(new LocalSwitch("Auto-dew", "AUTODEW") { Description = "Turns on or off the auto-dew functionality." });
-            switches.Add(new LocalSwitch("Input Voltage [V]", "INPUT_VOLTAGE", 16.0, 0.0, 0.01, 0.0, false, true) { Description = "Generic Power switch" });
-            switches.Add(new LocalSwitch("Input Current [A]", "INPUT_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DC1) [A]", "DC1_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DC2) [A]", "DC2_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DC3) [A]", "DC3_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DC4) [A]", "DC4_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DC5) [A]", "DC5_CURRENT", 30.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DEW1) [A]", "DEW1_CURRENT", 5.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DEW2) [A]", "DEW2_CURRENT", 5.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Output Current (DEW3) [A]", "DEW3_CURRENT", 5.0, 0.0, 0.01, 0.0, false, true));
-            switches.Add(new LocalSwitch("Temperature (EXT1) [°C]", "EXT1_ANALOG_TEMP", 60.0, -40.0, 0.1, 0.0, false, true));
-            switches.Add(new LocalSwitch("Temperature (EXT2) [°C]", "EXT2_ANALOG_TEMP", 60.0, -40.0, 0.1, 0.0, false, true));
-            switches.Add(new LocalSwitch("Temperature (EXT3) [°C]", "EXT3_ANALOG_TEMP", 60.0, -40.0, 0.1, 0.0, false, true));
-            switches.Add(new LocalSwitch("GPS Sleep mode", "GPS1") { Description = "When GPS is in sleep mode, it won't attempt to receive any coordinate data from satellites." });
-            switches.Add(new LocalSwitch("GPS Latitude", "GPS1_LATITUDE", -90, 90, 0.0001, 0.0, false, ENABLE_GPS));
-            switches.Add(new LocalSwitch("GPS Longitude", "GPS1_LONGITUDE", -180, 180, 0.0001, 0.0, false, ENABLE_GPS));
-            switches.Add(new LocalSwitch("GPS Elevation [m]", "GPS1_ELEVATION", -20, 7000, 0.001, 0.0, false, ENABLE_GPS));
-            switches.Add(new LocalSwitch("GPS Angle [°]", "GPS1_ANGLE", -180, 180, 0.001, 0.0, false, ENABLE_GPS));
-            internalIdMap = new Dictionary<string, int>();
-            for (int i = 0; i < switches.Count; i++)
-            {
-                internalIdMap[switches[i].InternalID] = i;
-            }
-            numSwitch = (short)switches.Count;
+            List<LocalSwitch > switches = new List<LocalSwitch>();
+            switches.Add(new LocalSwitch("DC1", "DC1", true) { Description = "DC1 switch" });
+            switches.Add(new LocalSwitch("DC2", "DC2", true) { Description = "DC2 switch" });
+            switches.Add(new LocalSwitch("DC3", "DC3", true) { Description = "DC3 switch" });
+            switches.Add(new LocalSwitch("DC4", "DC4", true) { Description = "DC4 switch" });
+            switches.Add(new LocalSwitch("DC5", "DC5", true) { Description = "DC5 switch" });
+            switches.Add(new LocalSwitch("DEW1 [%]", "DEW1", true, 100, 0, 0.01, 0) { Description = "Dew heater 1; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("DEW2 [%]", "DEW2", true, 100, 0, 0.01, 0) { Description = "Dew heater 2; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("DEW3 [%]", "DEW3", true, 100, 0, 0.01, 0) { Description = "Dew heater 3; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("Auto-dew", "AUTODEW", false) { Description = "Turns on or off the auto-dew functionality." });
+            switches.Add(new LocalSwitch("Input Voltage [V]", "INPUT_VOLTAGE", false, 16.0, 0.0, 0.01, 0.0, false, true) { Description = "Generic Power switch" });
+            switches.Add(new LocalSwitch("Input Current [A]", "INPUT_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DC1) [A]", "DC1_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DC2) [A]", "DC2_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DC3) [A]", "DC3_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DC4) [A]", "DC4_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DC5) [A]", "DC5_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DEW1) [A]", "DEW1_CURRENT", false, 5.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DEW2) [A]", "DEW2_CURRENT", false, 5.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Output Current (DEW3) [A]", "DEW3_CURRENT", false, 5.0, 0.0, 0.01, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (EXT1) [°C]", "EXT1_ANALOG_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (EXT2) [°C]", "EXT2_ANALOG_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (EXT3) [°C]", "EXT3_ANALOG_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (SHT1) [°C]", "SHT3X1_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (SHT2) [°C]", "SHT3X2_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Temperature (SHT3) [°C]", "SHT3X3_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Humidity (SHT1) [%]", "SHT3X1_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Humidity (SHT2) [%]", "SHT3X2_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Humidity (SHT3) [%]", "SHT3X3_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("Dew Point [°C]", "DEW_POINT", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("GPS Sleep mode", "GPS1", false) { Description = "When GPS is in sleep mode, it won't attempt to receive any coordinate data from satellites." });
+            switches.Add(new LocalSwitch("GPS Latitude", "GPS1_LATITUDE", false, 90, -90, 0.0001, 0.0, false, ENABLE_GPS));
+            switches.Add(new LocalSwitch("GPS Longitude", "GPS1_LONGITUDE", false, 180, -180, 0.0001, 0.0, false, ENABLE_GPS));
+            switches.Add(new LocalSwitch("GPS Elevation [m]", "GPS1_ELEVATION", false, 7000, -20, 0.001, 0.0, false, ENABLE_GPS));
+            switches.Add(new LocalSwitch("GPS Satellite Count", "GPS1_SATELLITE_COUNT", false, 30, 0, 1, 0, false, ENABLE_GPS));
+            //switches.Add(new LocalSwitch("GPS Angle [°]", "GPS1_ANGLE", false, -180, 180, 0.001, 0.0, false, ENABLE_GPS));
+            return switches;
         }
 
         /*private static void DataReceived()

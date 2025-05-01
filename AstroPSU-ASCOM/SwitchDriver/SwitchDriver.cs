@@ -205,7 +205,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             catch (Exception ex)
             {
                 LogMessage("SetupDialog", $"Threw an exception: \r\n{ex}");
-                throw;
+                throw ex;
             }
         }
 

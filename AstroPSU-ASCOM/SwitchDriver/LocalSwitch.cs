@@ -24,6 +24,8 @@ namespace ASCOM.Simulators
         public string Description { get; set; }
         public bool InSync { get; set; }
         public bool RegularFetch { get; set; }
+        public bool CanSetName { get; set; }
+        public bool Hide {  get; set; }
 
         #region ISwitchV3 members
 
@@ -60,8 +62,8 @@ namespace ASCOM.Simulators
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="internalId">The ID that is used to communicate with the microcontroller.</param>
-        internal LocalSwitch(string name, string internalId)
-            : this(name, internalId, 1, 0, 1, 0)
+        internal LocalSwitch(string name, string internalId, bool canSetName)
+            : this(name, internalId, canSetName, 1, 0, 1, 0)
         { }
 
         /// <summary>
@@ -73,8 +75,8 @@ namespace ASCOM.Simulators
         /// <param name="minimum">The minimum.</param>
         /// <param name="stepSize">step Size</param>
         /// <param name="value">The value.</param>
-        internal LocalSwitch(string name, string internalId, double maximum, double minimum, double stepSize, double value)
-            : this(name, internalId, maximum, minimum, stepSize, value, true, false)
+        internal LocalSwitch(string name, string internalId, bool canSetName, double maximum, double minimum, double stepSize, double value)
+            : this(name, internalId, canSetName, maximum, minimum, stepSize, value, true, false)
         { }
 
         /// <summary>
@@ -87,10 +89,11 @@ namespace ASCOM.Simulators
         /// <param name="step">The step.</param>
         /// <param name="canWrite">if set to <c>true</c> [read only].</param>
         /// <param name="value">The value.</param>
-        public LocalSwitch(string name, string internalId, double max, double min, double step, double value, bool canWrite, bool regularFetch)
+        public LocalSwitch(string name, string internalId, bool canSetName, double max, double min, double step, double value, bool canWrite, bool regularFetch)
         {
             this.Name = name;
             this.InternalID = internalId;
+            this.CanSetName = canSetName;
             this.Maximum = max;
             this.Minimum = min;
             this.StepSize = step;
