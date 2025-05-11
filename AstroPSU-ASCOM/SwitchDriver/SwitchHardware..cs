@@ -548,7 +548,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
         {
             get
             {
-                string name = "AstroPSU-ASCOM";
+                string name = "AstroPSU";
                 LogMessage("Name Get", name);
                 return name;
             }
