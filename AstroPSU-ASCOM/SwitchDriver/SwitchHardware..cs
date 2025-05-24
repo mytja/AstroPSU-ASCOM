@@ -757,6 +757,11 @@ namespace ASCOM.mytjaAstroPSU.Switch
             {
                 switches[id].Value = value;
             }
+            for (int i = 0; i < switches.Count; i++)
+            {
+                if (switches[i].InternalID != "AUTODEW") continue;
+                switches[i].Value = 0;
+            }
             //mutex.ReleaseMutex();
         }
 
