@@ -894,9 +894,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
             switches.Add(new LocalSwitch("DC3", "DC3", true) { Description = "DC3 switch" });
             switches.Add(new LocalSwitch("DC4", "DC4", true) { Description = "DC4 switch" });
             switches.Add(new LocalSwitch("DC5", "DC5", true) { Description = "DC5 switch" });
-            switches.Add(new LocalSwitch("DEW1 [%]", "DEW1", true, 100, 0, 0.01, 0) { Description = "Dew heater 1; adjustable PWM output; from 0 to 100" });
-            switches.Add(new LocalSwitch("DEW2 [%]", "DEW2", true, 100, 0, 0.01, 0) { Description = "Dew heater 2; adjustable PWM output; from 0 to 100" });
-            switches.Add(new LocalSwitch("DEW3 [%]", "DEW3", true, 100, 0, 0.01, 0) { Description = "Dew heater 3; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("DEW1 [%]", "DEW1", true, 100, 0, 0.01, 0, true, true) { Description = "Dew heater 1; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("DEW2 [%]", "DEW2", true, 100, 0, 0.01, 0, true, true) { Description = "Dew heater 2; adjustable PWM output; from 0 to 100" });
+            switches.Add(new LocalSwitch("DEW3 [%]", "DEW3", true, 100, 0, 0.01, 0, true, true) { Description = "Dew heater 3; adjustable PWM output; from 0 to 100" });
             switches.Add(new LocalSwitch("Auto-dew", "AUTODEW", false) { Description = "Turns on or off the auto-dew functionality." });
             switches.Add(new LocalSwitch("Input Voltage [V]", "INPUT_VOLTAGE", false, 16.0, 0.0, 0.01, 0.0, false, true) { Description = "Generic Power switch" });
             switches.Add(new LocalSwitch("Input Current [A]", "INPUT_CURRENT", false, 30.0, 0.0, 0.01, 0.0, false, true));
