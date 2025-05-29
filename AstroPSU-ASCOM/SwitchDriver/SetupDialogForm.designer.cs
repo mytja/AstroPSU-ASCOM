@@ -91,6 +91,12 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.dewPointHide = new System.Windows.Forms.CheckBox();
             this.dewPointName = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.gyroXHide = new System.Windows.Forms.CheckBox();
+            this.gyroXName = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.gyroYHide = new System.Windows.Forms.CheckBox();
+            this.gyroYName = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,7 +104,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(473, 724);
+            this.cmdOK.Location = new System.Drawing.Point(851, 722);
             this.cmdOK.Margin = new System.Windows.Forms.Padding(4);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(79, 30);
@@ -111,7 +117,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(473, 761);
+            this.cmdCancel.Location = new System.Drawing.Point(851, 759);
             this.cmdCancel.Margin = new System.Windows.Forms.Padding(4);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(79, 31);
@@ -134,7 +140,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picASCOM.Image = ((System.Drawing.Image)(resources.GetObject("picASCOM.Image")));
-            this.picASCOM.Location = new System.Drawing.Point(487, 11);
+            this.picASCOM.Location = new System.Drawing.Point(865, 11);
             this.picASCOM.Margin = new System.Windows.Forms.Padding(4);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);
@@ -543,7 +549,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.gpsShow.AutoSize = true;
             this.gpsShow.Checked = true;
             this.gpsShow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gpsShow.Location = new System.Drawing.Point(25, 724);
+            this.gpsShow.Location = new System.Drawing.Point(25, 728);
             this.gpsShow.Name = "gpsShow";
             this.gpsShow.Size = new System.Drawing.Size(161, 20);
             this.gpsShow.TabIndex = 53;
@@ -654,11 +660,69 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.label20.TabIndex = 63;
             this.label20.Text = "Dew Point Name";
             // 
+            // gyroXHide
+            // 
+            this.gyroXHide.AutoSize = true;
+            this.gyroXHide.Location = new System.Drawing.Point(838, 186);
+            this.gyroXHide.Name = "gyroXHide";
+            this.gyroXHide.Size = new System.Drawing.Size(58, 20);
+            this.gyroXHide.TabIndex = 68;
+            this.gyroXHide.Text = "Hide";
+            this.gyroXHide.UseVisualStyleBackColor = true;
+            // 
+            // gyroXName
+            // 
+            this.gyroXName.Location = new System.Drawing.Point(598, 184);
+            this.gyroXName.Name = "gyroXName";
+            this.gyroXName.Size = new System.Drawing.Size(217, 22);
+            this.gyroXName.TabIndex = 67;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(477, 187);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(87, 16);
+            this.label21.TabIndex = 66;
+            this.label21.Text = "Gyro X Name";
+            // 
+            // gyroYHide
+            // 
+            this.gyroYHide.AutoSize = true;
+            this.gyroYHide.Location = new System.Drawing.Point(838, 214);
+            this.gyroYHide.Name = "gyroYHide";
+            this.gyroYHide.Size = new System.Drawing.Size(58, 20);
+            this.gyroYHide.TabIndex = 71;
+            this.gyroYHide.Text = "Hide";
+            this.gyroYHide.UseVisualStyleBackColor = true;
+            // 
+            // gyroYName
+            // 
+            this.gyroYName.Location = new System.Drawing.Point(598, 212);
+            this.gyroYName.Name = "gyroYName";
+            this.gyroYName.Size = new System.Drawing.Size(217, 22);
+            this.gyroYName.TabIndex = 70;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(477, 215);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(88, 16);
+            this.label22.TabIndex = 69;
+            this.label22.Text = "Gyro Y Name";
+            // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 801);
+            this.ClientSize = new System.Drawing.Size(943, 799);
+            this.Controls.Add(this.gyroYHide);
+            this.Controls.Add(this.gyroYName);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.gyroXHide);
+            this.Controls.Add(this.gyroXName);
+            this.Controls.Add(this.label21);
             this.Controls.Add(this.dewPointHide);
             this.Controls.Add(this.dewPointName);
             this.Controls.Add(this.label20);
@@ -800,5 +864,11 @@ namespace ASCOM.mytjaAstroPSU.Switch
         private System.Windows.Forms.CheckBox dewPointHide;
         private System.Windows.Forms.TextBox dewPointName;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.CheckBox gyroXHide;
+        private System.Windows.Forms.TextBox gyroXName;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.CheckBox gyroYHide;
+        private System.Windows.Forms.TextBox gyroYName;
+        private System.Windows.Forms.Label label22;
     }
 }

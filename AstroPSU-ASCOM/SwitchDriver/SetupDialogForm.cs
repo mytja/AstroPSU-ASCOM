@@ -88,6 +88,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "SHT3X2_HUM") SwitchHardware.allSwitches[i].Name = sht2HumName.Text;
                 else if (id == "SHT3X3_HUM") SwitchHardware.allSwitches[i].Name = sht3HumName.Text;
                 else if (id == "DEW_POINT") SwitchHardware.allSwitches[i].Name = dewPointName.Text;
+                else if (id == "GYRO_X") SwitchHardware.allSwitches[i].Name = gyroXName.Text;
+                else if (id == "GYRO_Y") SwitchHardware.allSwitches[i].Name = gyroYName.Text;
+                //else if (id == "GYRO_Z") SwitchHardware.allSwitches[i].Name = gyroZName.Text;
 
                 if (id == "DC1") SwitchHardware.allSwitches[i].Hide = dc1Hide.Checked;
                 else if (id == "DC2") SwitchHardware.allSwitches[i].Hide = dc2Hide.Checked;
@@ -107,6 +110,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "SHT3X2_HUM") SwitchHardware.allSwitches[i].Hide = sht2HumHide.Checked;
                 else if (id == "SHT3X3_HUM") SwitchHardware.allSwitches[i].Hide = sht3HumHide.Checked;
                 else if (id == "DEW_POINT") SwitchHardware.allSwitches[i].Hide = dewPointHide.Checked;
+                else if (id == "GYRO_X") SwitchHardware.allSwitches[i].Hide = gyroXHide.Checked;
+                else if (id == "GYRO_Y") SwitchHardware.allSwitches[i].Hide = gyroYHide.Checked;
+                //else if (id == "GYRO_Z") SwitchHardware.allSwitches[i].Hide = gyroZHide.Checked;
 
                 if (!SwitchHardware.allSwitches[i].Hide) SwitchHardware.switches.Add(SwitchHardware.allSwitches[i]);
 
@@ -209,6 +215,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "SHT3X2_HUM") sht2HumName.Text = value;
                 else if (id == "SHT3X3_HUM") sht3HumName.Text = value;
                 else if (id == "DEW_POINT") dewPointName.Text = value;
+                else if (id == "GYRO_X") gyroXName.Text = value;
+                else if (id == "GYRO_Y") gyroYName.Text = value;
+                //else if (id == "GYRO_Z") gyroZName.Text = value;
 
                 if (id == "DC1") dc1Hide.Checked = hide;
                 else if (id == "DC2") dc2Hide.Checked = hide;
@@ -228,6 +237,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "SHT3X2_HUM") sht2HumHide.Checked = hide;
                 else if (id == "SHT3X3_HUM") sht3HumHide.Checked = hide;
                 else if (id == "DEW_POINT") dewPointHide.Checked = hide;
+                else if (id == "GYRO_X") gyroXHide.Checked = hide;
+                else if (id == "GYRO_Y") gyroYHide.Checked = hide;
+                //else if (id == "GYRO_Z") gyroZHide.Checked = hide;
             }
 
             tl.LogMessage("InitUI", $"Set UI controls to Trace: {chkTrace.Checked}, COM Port: {comboBoxComPort.SelectedItem}");

@@ -462,8 +462,14 @@ namespace ASCOM.mytjaAstroPSU.Switch
             while (true)
             {
                 cts.Token.ThrowIfCancellationRequested();
-                await Task.Delay(2000);
+                await Task.Delay(500);
                 cts.Token.ThrowIfCancellationRequested();
+
+                // Potrebno za Gyro
+                //objSerial.Transmit($"REFRESH_DATA\n");
+                //objSerial.ReceiveTerminated("\n").Trim();
+                //await Task.Delay(1000);
+
                 for (int i = 0; i < switches.Count; i++)
                 {
                     if (!switches[i].RegularFetch) continue;
@@ -928,6 +934,8 @@ namespace ASCOM.mytjaAstroPSU.Switch
             switches.Add(new LocalSwitch("GPS Longitude", "GPS1_LONGITUDE", false, 180, -180, 0.0001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Elevation [m]", "GPS1_ELEVATION", false, 7000, -20, 0.001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Satellite Count", "GPS1_SATELLITE_COUNT", false, 30, 0, 1, 0, false, ENABLE_GPS));
+            switches.Add(new LocalSwitch("Gyro X", "GYRO_X", false, -360, 360, 0.0001, 0.0, false, true));
+            switches.Add(new LocalSwitch("Gyro Y", "GYRO_Y", false, -360, 360, 0.0001, 0.0, false, true));
             //switches.Add(new LocalSwitch("GPS Angle [°]", "GPS1_ANGLE", false, -180, 180, 0.001, 0.0, false, ENABLE_GPS));
             return switches;
         }
