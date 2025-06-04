@@ -320,70 +320,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                 if (value)
                 {
-                    if (autoDetectComPort)
+                    objSerial = DetectCOMPort();
+                    if (objSerial == null)
                     {
-                        comPort = DetectCOMPort();
-                    }
-
-                    // Fallback, in case of detection error...
-                    if (comPort == null)
-                    {
-                        comPort = comPortOverride;
-                    }
-
-                    if (!System.IO.Ports.SerialPort.GetPortNames().Contains(comPort))
-                    {
-                        if (!(objSerial is null)) objSerial.Connected = false;
-                        connectedState = false;
-                        throw new InvalidValueException("Invalid COM port", comPort.ToString(), String.Join(", ", System.IO.Ports.SerialPort.GetPortNames()));
-                    }
-
-                    LogMessage("Connected Set", "Connecting to port {0}", comPort);
-
-                    objSerial = new Serial
-                    {
-                        PortName = comPort,
-                        Speed = SerialSpeed.ps115200,
-                        Parity = SerialParity.None,
-                        DataBits = 8,
-                        StopBits = SerialStopBits.One,
-                        Handshake = SerialHandshake.None,
-                        ReceiveTimeoutMs = 1000,
-                        DTREnable = true,
-                    };
-                    objSerial.Connected = true;
-
-                    bool success = false;
-                    for (int retries = 3; retries > 0; retries--)
-                    {
-                        string response = "";
-                        //objSerial.DiscardInBuffer();
-                        //objSerial.DiscardOutBuffer();
-                        try
-                        {
-                            objSerial.Transmit("FWINFO\n");
-                            response = objSerial.ReceiveTerminated("\n").Trim();
-                        }
-                        catch (Exception e)
-                        {
-                            LogMessage("Connected Set", $"Error while connecting to port {comPort}: {e}");
-                            // PortInUse or Timeout exceptions may happen here!
-                            // We ignore them.
-                        }
-                        LogMessage("Connected Set", $"Response on port {comPort}: {response}");
-                        if (response.StartsWith("AstroPSU-Pico"))
-                        {
-                            LogMessage("Connected Set", $"Successfully connected to port {comPort}!");
-                            success = true;
-                            break;
-                        }
-                    }
-
-                    if (!success)
-                    {
-                        objSerial.Connected = false;
-                        objSerial.Dispose();
-                        objSerial = null;
                         connectedState = false;
                         throw new ASCOM.NotConnectedException("Failed to connect");
                     }
@@ -968,7 +907,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
             }
         }*/
 
-        internal static string DetectCOMPort()
+        internal static Serial DetectCOMPort()
         {
             LogMessage("DetectCOMPort", $"Serial Ports {String.Join(",", SerialPort.GetPortNames())}");
             foreach (string portName in SerialPort.GetPortNames())
@@ -980,11 +919,16 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 {
                     serial = new Serial
                     {
-                        Speed = SerialSpeed.ps115200,
                         PortName = portName,
-                        Connected = true,
-                        ReceiveTimeout = 1
+                        Speed = SerialSpeed.ps115200,
+                        Parity = SerialParity.None,
+                        DataBits = 8,
+                        StopBits = SerialStopBits.One,
+                        Handshake = SerialHandshake.None,
+                        ReceiveTimeoutMs = 2000,
+                        DTREnable = true,
                     };
+                    serial.Connected = true;
                 }
                 catch (Exception e)
                 {
@@ -1012,8 +956,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                     catch (Exception e)
                     {
                         LogMessage("DetectCOMPort", $"Exception thrown on Serial transmit {e}");
-                        // PortInUse or Timeout exceptions may happen here!
-                        // We ignore them.
+                        continue;
                     }
                     LogMessage("DetectCOMPort", $"Response: {response}");
                     if (response.StartsWith("AstroPSU-Pico"))
@@ -1023,14 +966,14 @@ namespace ASCOM.mytjaAstroPSU.Switch
                     }
                 }
 
-                serial.Connected = false;
-                serial.Dispose();
-
                 if (success)
                 {
                     LogMessage("DetectCOMPort", $"Port {portName} OK!");
-                    return portName;
+                    return serial;
                 }
+
+                serial.Connected = false;
+                serial.Dispose();
             }
 
             return null;
