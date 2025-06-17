@@ -97,6 +97,10 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.gyroYHide = new System.Windows.Forms.CheckBox();
             this.gyroYName = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
+            this.disableFanShow = new System.Windows.Forms.CheckBox();
+            this.cpuTempHide = new System.Windows.Forms.CheckBox();
+            this.cpuTempName = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             this.SuspendLayout();
             // 
@@ -712,11 +716,53 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.label22.TabIndex = 69;
             this.label22.Text = "Gyro Y Name";
             // 
+            // disableFanShow
+            // 
+            this.disableFanShow.AutoSize = true;
+            this.disableFanShow.Checked = true;
+            this.disableFanShow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.disableFanShow.Location = new System.Drawing.Point(227, 728);
+            this.disableFanShow.Name = "disableFanShow";
+            this.disableFanShow.Size = new System.Drawing.Size(179, 20);
+            this.disableFanShow.TabIndex = 72;
+            this.disableFanShow.Text = "Show Disable Fan toggle";
+            this.disableFanShow.UseVisualStyleBackColor = true;
+            // 
+            // cpuTempHide
+            // 
+            this.cpuTempHide.AutoSize = true;
+            this.cpuTempHide.Location = new System.Drawing.Point(838, 242);
+            this.cpuTempHide.Name = "cpuTempHide";
+            this.cpuTempHide.Size = new System.Drawing.Size(58, 20);
+            this.cpuTempHide.TabIndex = 75;
+            this.cpuTempHide.Text = "Hide";
+            this.cpuTempHide.UseVisualStyleBackColor = true;
+            // 
+            // cpuTempName
+            // 
+            this.cpuTempName.Location = new System.Drawing.Point(598, 240);
+            this.cpuTempName.Name = "cpuTempName";
+            this.cpuTempName.Size = new System.Drawing.Size(217, 22);
+            this.cpuTempName.TabIndex = 74;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(477, 243);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(114, 16);
+            this.label23.TabIndex = 73;
+            this.label23.Text = "CPU Temp Name";
+            // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(943, 799);
+            this.Controls.Add(this.cpuTempHide);
+            this.Controls.Add(this.cpuTempName);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.disableFanShow);
             this.Controls.Add(this.gyroYHide);
             this.Controls.Add(this.gyroYName);
             this.Controls.Add(this.label22);
@@ -870,5 +916,9 @@ namespace ASCOM.mytjaAstroPSU.Switch
         private System.Windows.Forms.CheckBox gyroYHide;
         private System.Windows.Forms.TextBox gyroYName;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.CheckBox disableFanShow;
+        private System.Windows.Forms.CheckBox cpuTempHide;
+        private System.Windows.Forms.TextBox cpuTempName;
+        private System.Windows.Forms.Label label23;
     }
 }

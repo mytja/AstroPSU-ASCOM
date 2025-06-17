@@ -90,6 +90,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "DEW_POINT") SwitchHardware.allSwitches[i].Name = dewPointName.Text;
                 else if (id == "GYRO_X") SwitchHardware.allSwitches[i].Name = gyroXName.Text;
                 else if (id == "GYRO_Y") SwitchHardware.allSwitches[i].Name = gyroYName.Text;
+                else if (id == "CPU_TEMP") SwitchHardware.allSwitches[i].Name = cpuTempName.Text;
                 //else if (id == "GYRO_Z") SwitchHardware.allSwitches[i].Name = gyroZName.Text;
 
                 if (id == "DC1") SwitchHardware.allSwitches[i].Hide = dc1Hide.Checked;
@@ -100,6 +101,8 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "DEW1") SwitchHardware.allSwitches[i].Hide = dew1Hide.Checked;
                 else if (id == "DEW2") SwitchHardware.allSwitches[i].Hide = dew2Hide.Checked;
                 else if (id == "DEW3") SwitchHardware.allSwitches[i].Hide = dew3Hide.Checked;
+                else if (id == "DEW3") SwitchHardware.allSwitches[i].Hide = dew3Hide.Checked;
+                else if (id == "FAN") SwitchHardware.allSwitches[i].Hide = !disableFanShow.Checked;
                 else if (id == "EXT1_ANALOG_TEMP") SwitchHardware.allSwitches[i].Hide = ext1TempHide.Checked;
                 else if (id == "EXT2_ANALOG_TEMP") SwitchHardware.allSwitches[i].Hide = ext2TempHide.Checked;
                 else if (id == "EXT3_ANALOG_TEMP") SwitchHardware.allSwitches[i].Hide = ext3TempHide.Checked;
@@ -112,6 +115,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "DEW_POINT") SwitchHardware.allSwitches[i].Hide = dewPointHide.Checked;
                 else if (id == "GYRO_X") SwitchHardware.allSwitches[i].Hide = gyroXHide.Checked;
                 else if (id == "GYRO_Y") SwitchHardware.allSwitches[i].Hide = gyroYHide.Checked;
+                else if (id == "CPU_TEMP") SwitchHardware.allSwitches[i].Hide = cpuTempHide.Checked;
                 //else if (id == "GYRO_Z") SwitchHardware.allSwitches[i].Hide = gyroZHide.Checked;
 
                 if (!SwitchHardware.allSwitches[i].Hide) SwitchHardware.switches.Add(SwitchHardware.allSwitches[i]);
@@ -217,6 +221,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "DEW_POINT") dewPointName.Text = value;
                 else if (id == "GYRO_X") gyroXName.Text = value;
                 else if (id == "GYRO_Y") gyroYName.Text = value;
+                else if (id == "CPU_TEMP") cpuTempName.Text = value;
                 //else if (id == "GYRO_Z") gyroZName.Text = value;
 
                 if (id == "DC1") dc1Hide.Checked = hide;
@@ -230,6 +235,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "EXT1_ANALOG_TEMP") ext1TempHide.Checked = hide;
                 else if (id == "EXT2_ANALOG_TEMP") ext2TempHide.Checked = hide;
                 else if (id == "EXT3_ANALOG_TEMP") ext3TempHide.Checked = hide;
+                else if (id == "FAN") disableFanShow.Checked = !hide;
                 else if (id == "SHT3X1_TEMP") sht1TempHide.Checked = hide;
                 else if (id == "SHT3X2_TEMP") sht2TempHide.Checked = hide;
                 else if (id == "SHT3X3_TEMP") sht3TempHide.Checked = hide;
@@ -239,6 +245,7 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "DEW_POINT") dewPointHide.Checked = hide;
                 else if (id == "GYRO_X") gyroXHide.Checked = hide;
                 else if (id == "GYRO_Y") gyroYHide.Checked = hide;
+                else if (id == "CPU_TEMP") cpuTempHide.Checked = hide;
                 //else if (id == "GYRO_Z") gyroZHide.Checked = hide;
             }
 

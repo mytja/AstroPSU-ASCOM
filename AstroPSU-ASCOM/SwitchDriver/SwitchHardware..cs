@@ -864,11 +864,13 @@ namespace ASCOM.mytjaAstroPSU.Switch
             switches.Add(new LocalSwitch("Temperature (SHT1) [°C]", "SHT3X1_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Temperature (SHT2) [°C]", "SHT3X2_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Temperature (SHT3) [°C]", "SHT3X3_TEMP", true, 60.0, -40.0, 0.1, 0.0, false, true));
+            switches.Add(new LocalSwitch("CPU Temperature (RP2040) [°C]", "CPU_TEMP", true, 80.0, -40.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Humidity (SHT1) [%]", "SHT3X1_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Humidity (SHT2) [%]", "SHT3X2_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Humidity (SHT3) [%]", "SHT3X3_HUM", true, 100.0, 0.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("Dew Point [°C]", "DEW_POINT", true, 60.0, -40.0, 0.1, 0.0, false, true));
             switches.Add(new LocalSwitch("GPS Sleep mode", "GPS1", false) { Description = "When GPS is in sleep mode, it won't attempt to receive any coordinate data from satellites." });
+            switches.Add(new LocalSwitch("Disable Fan", "FAN", false) { Description = "Beware that disabling the fan might lead to overheating, causing a shorter lifespan of components." });
             switches.Add(new LocalSwitch("GPS Latitude", "GPS1_LATITUDE", false, 90, -90, 0.0001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Longitude", "GPS1_LONGITUDE", false, 180, -180, 0.0001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Elevation [m]", "GPS1_ELEVATION", false, 7000, -20, 0.001, 0.0, false, ENABLE_GPS));
