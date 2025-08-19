@@ -26,6 +26,7 @@ namespace ASCOM.Simulators
         public bool RegularFetch { get; set; }
         public bool CanSetName { get; set; }
         public bool Hide {  get; set; }
+        public bool IsCommand { get; set; }
 
         #region ISwitchV3 members
 

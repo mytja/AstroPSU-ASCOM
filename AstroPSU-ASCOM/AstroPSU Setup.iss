@@ -5,13 +5,13 @@
 [Setup]
 AppID={{ecdf1e3b-ae38-496c-953f-5f5181c687b8}
 AppName=ASCOM AstroPSU Switch Driver
-AppVerName=ASCOM AstroPSU Switch Driver 1.0.0
-AppVersion=1.0.0
+AppVerName=ASCOM AstroPSU Switch Driver 1.0.1
+AppVersion=1.0.1
 AppPublisher=Mitja Ševerkar <mitja@severkar.eu>
 AppPublisherURL=mailto:mitja@severkar.eu
 AppSupportURL=https://ascomtalk.groups.io/g/Help
 AppUpdatesURL=https://ascom-standards.org/
-VersionInfoVersion=1.0.0
+VersionInfoVersion=1.0.1
 MinVersion=6.1.7601
 DefaultDirName="{cf}\ASCOM\Switch"
 DisableDirPage=yes

@@ -875,8 +875,12 @@ namespace ASCOM.mytjaAstroPSU.Switch
             switches.Add(new LocalSwitch("GPS Longitude", "GPS1_LONGITUDE", false, 180, -180, 0.0001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Elevation [m]", "GPS1_ELEVATION", false, 7000, -20, 0.001, 0.0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("GPS Satellite Count", "GPS1_SATELLITE_COUNT", false, 30, 0, 1, 0, false, ENABLE_GPS));
-            switches.Add(new LocalSwitch("Gyro X", "GYRO_X", false, -360, 360, 0.0001, 0.0, false, true));
-            switches.Add(new LocalSwitch("Gyro Y", "GYRO_Y", false, -360, 360, 0.0001, 0.0, false, true));
+            switches.Add(new LocalSwitch("Gyro X", "GYRO_X", true, -360, 360, 0.0001, 0.0, false, true));
+            switches.Add(new LocalSwitch("Gyro Y", "GYRO_Y", true, -360, 360, 0.0001, 0.0, false, true));
+            //switches.Add(new LocalSwitch("Zero", "ZERO", false) { Description = "Upon clicking this switch, the power supply will zero the current sensors. Proceed with caution.", IsCommand = true });
+            //switches.Add(new LocalSwitch("BOOTSEL Mode", "BOOTSEL", false) { Description = "Upon clicking this switch, the power supply will reboot into BOOTSEL mode. Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
+            //switches.Add(new LocalSwitch("Reboot", "REBOOT", false) { Description = "Upon clicking this switch, the power supply will reboot (into normal mode). Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
+            //switches.Add(new LocalSwitch("Reset Core 1", "RESET_CORE", false) { Description = "Upon clicking this switch, the power supply will restart the second core (core 1). Proceed with caution. This can be useful if sensor values aren't updating.", IsCommand = true });
             //switches.Add(new LocalSwitch("GPS Angle [°]", "GPS1_ANGLE", false, -180, 180, 0.001, 0.0, false, ENABLE_GPS));
             return switches;
         }
