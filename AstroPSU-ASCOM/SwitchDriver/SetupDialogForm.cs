@@ -116,6 +116,10 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "GYRO_X") SwitchHardware.allSwitches[i].Hide = gyroXHide.Checked;
                 else if (id == "GYRO_Y") SwitchHardware.allSwitches[i].Hide = gyroYHide.Checked;
                 else if (id == "CPU_TEMP") SwitchHardware.allSwitches[i].Hide = cpuTempHide.Checked;
+                else if (id == "ZERO") SwitchHardware.allSwitches[i].Hide = zeroButtonHide.Checked;
+                else if (id == "BOOTSEL") SwitchHardware.allSwitches[i].Hide = bootselButtonHide.Checked;
+                else if (id == "REBOOT") SwitchHardware.allSwitches[i].Hide = rebootButtonHide.Checked;
+                else if (id == "RESET_CORE") SwitchHardware.allSwitches[i].Hide = resetCoreButtonHide.Checked;
                 //else if (id == "GYRO_Z") SwitchHardware.allSwitches[i].Hide = gyroZHide.Checked;
 
                 if (!SwitchHardware.allSwitches[i].Hide) SwitchHardware.switches.Add(SwitchHardware.allSwitches[i]);
@@ -246,6 +250,10 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 else if (id == "GYRO_X") gyroXHide.Checked = hide;
                 else if (id == "GYRO_Y") gyroYHide.Checked = hide;
                 else if (id == "CPU_TEMP") cpuTempHide.Checked = hide;
+                else if (id == "ZERO") zeroButtonHide.Checked = hide;
+                else if (id == "BOOTSEL") bootselButtonHide.Checked = hide;
+                else if (id == "REBOOT") rebootButtonHide.Checked = hide;
+                else if (id == "RESET_CORE") resetCoreButtonHide.Checked = hide;
                 //else if (id == "GYRO_Z") gyroZHide.Checked = hide;
             }
 

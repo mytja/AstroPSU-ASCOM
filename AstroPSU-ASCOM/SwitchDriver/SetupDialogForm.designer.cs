@@ -101,6 +101,14 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.cpuTempHide = new System.Windows.Forms.CheckBox();
             this.cpuTempName = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.rebootButtonHide = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.bootselButtonHide = new System.Windows.Forms.CheckBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.zeroButtonHide = new System.Windows.Forms.CheckBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.resetCoreButtonHide = new System.Windows.Forms.CheckBox();
+            this.label27 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             this.SuspendLayout();
             // 
@@ -754,11 +762,95 @@ namespace ASCOM.mytjaAstroPSU.Switch
             this.label23.TabIndex = 73;
             this.label23.Text = "CPU Temp Name";
             // 
+            // rebootButtonHide
+            // 
+            this.rebootButtonHide.AutoSize = true;
+            this.rebootButtonHide.Location = new System.Drawing.Point(838, 478);
+            this.rebootButtonHide.Name = "rebootButtonHide";
+            this.rebootButtonHide.Size = new System.Drawing.Size(58, 20);
+            this.rebootButtonHide.TabIndex = 81;
+            this.rebootButtonHide.Text = "Hide";
+            this.rebootButtonHide.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(477, 479);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(92, 16);
+            this.label24.TabIndex = 80;
+            this.label24.Text = "Reboot Button";
+            // 
+            // bootselButtonHide
+            // 
+            this.bootselButtonHide.AutoSize = true;
+            this.bootselButtonHide.Location = new System.Drawing.Point(838, 450);
+            this.bootselButtonHide.Name = "bootselButtonHide";
+            this.bootselButtonHide.Size = new System.Drawing.Size(58, 20);
+            this.bootselButtonHide.TabIndex = 79;
+            this.bootselButtonHide.Text = "Hide";
+            this.bootselButtonHide.UseVisualStyleBackColor = true;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(477, 451);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(110, 16);
+            this.label25.TabIndex = 78;
+            this.label25.Text = "BOOTSEL Button";
+            // 
+            // zeroButtonHide
+            // 
+            this.zeroButtonHide.AutoSize = true;
+            this.zeroButtonHide.Location = new System.Drawing.Point(838, 422);
+            this.zeroButtonHide.Name = "zeroButtonHide";
+            this.zeroButtonHide.Size = new System.Drawing.Size(58, 20);
+            this.zeroButtonHide.TabIndex = 77;
+            this.zeroButtonHide.Text = "Hide";
+            this.zeroButtonHide.UseVisualStyleBackColor = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(477, 423);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(75, 16);
+            this.label26.TabIndex = 76;
+            this.label26.Text = "Zero Button";
+            // 
+            // resetCoreButtonHide
+            // 
+            this.resetCoreButtonHide.AutoSize = true;
+            this.resetCoreButtonHide.Location = new System.Drawing.Point(838, 504);
+            this.resetCoreButtonHide.Name = "resetCoreButtonHide";
+            this.resetCoreButtonHide.Size = new System.Drawing.Size(58, 20);
+            this.resetCoreButtonHide.TabIndex = 83;
+            this.resetCoreButtonHide.Text = "Hide";
+            this.resetCoreButtonHide.UseVisualStyleBackColor = true;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(477, 505);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(125, 16);
+            this.label27.TabIndex = 82;
+            this.label27.Text = "Reset Core 1 Button";
+            // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(943, 799);
+            this.Controls.Add(this.resetCoreButtonHide);
+            this.Controls.Add(this.label27);
+            this.Controls.Add(this.rebootButtonHide);
+            this.Controls.Add(this.label24);
+            this.Controls.Add(this.bootselButtonHide);
+            this.Controls.Add(this.label25);
+            this.Controls.Add(this.zeroButtonHide);
+            this.Controls.Add(this.label26);
             this.Controls.Add(this.cpuTempHide);
             this.Controls.Add(this.cpuTempName);
             this.Controls.Add(this.label23);
@@ -920,5 +1012,13 @@ namespace ASCOM.mytjaAstroPSU.Switch
         private System.Windows.Forms.CheckBox cpuTempHide;
         private System.Windows.Forms.TextBox cpuTempName;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.CheckBox rebootButtonHide;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.CheckBox bootselButtonHide;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.CheckBox zeroButtonHide;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.CheckBox resetCoreButtonHide;
+        private System.Windows.Forms.Label label27;
     }
 }

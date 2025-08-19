@@ -329,6 +329,11 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                     for (int id = 0; id < switches.Count; id++)
                     {
+                        if (switches[id].IsCommand)
+                        {
+                            switches[id].Value = 0.0;
+                            continue;
+                        }
                         if (switches[id].InternalID == "AUTODEW") continue;
                         if (!switches[id].InternalID.StartsWith("DEW") || switches[id].InternalID.Contains("_"))
                         {
@@ -341,6 +346,11 @@ namespace ASCOM.mytjaAstroPSU.Switch
 
                     for (int id = 0; id < switches.Count; id++)
                     {
+                        if (switches[id].IsCommand)
+                        {
+                            switches[id].Value = 0.0;
+                            continue;
+                        }
                         if (!(switches[id].InternalID.StartsWith("DC") || switches[id].InternalID == "AUTODEW") || switches[id].InternalID.Contains("_"))
                         {
                             continue;
@@ -617,6 +627,19 @@ namespace ASCOM.mytjaAstroPSU.Switch
             }
             LogMessage("SetSwitch", $"Set switch state {id}");
             //mutex.WaitOne();
+
+            if (switches[id].IsCommand)
+            {
+                Send($"{switches[id].InternalID}\n");
+                if (objSerial.ReceiveTerminated("\n").Trim().StartsWith("OK"))
+                {
+                    switches[id].Value = 1;
+                    Thread.Sleep(1000);
+                    switches[id].Value = 0;
+                }
+                return;
+            }
+
             if (state) Send($"ON;{switches[id].InternalID}\n");
             else Send($"OFF;{switches[id].InternalID}\n");
             if (objSerial.ReceiveTerminated("\n").Trim() == "OK")
@@ -799,13 +822,21 @@ namespace ASCOM.mytjaAstroPSU.Switch
                     {
                         continue;
                     }
+                    bool hide;
+                    if (allSwitches[i].IsCommand)
+                    {
+                        hide = bool.Parse(driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", string.Empty, "true"));
+                        allSwitches[i].Hide = hide;
+                        if (!hide) switches.Add(allSwitches[i]);
+                        continue;
+                    }
                     if (!allSwitches[i].CanSetName)
                     {
                         switches.Add(allSwitches[i]);
                         continue;
                     }
                     allSwitches[i].Name = driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_name", string.Empty, allSwitches[i].Name);
-                    bool hide = bool.Parse(driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", string.Empty, "false"));
+                    hide = bool.Parse(driverProfile.GetValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", string.Empty, "false"));
                     allSwitches[i].Hide = hide;
                     if (!hide) switches.Add(allSwitches[i]);
                 }
@@ -825,6 +856,11 @@ namespace ASCOM.mytjaAstroPSU.Switch
                 driverProfile.WriteValue(DriverProgId, traceStateProfileName, tl.Enabled.ToString());
                 driverProfile.WriteValue(DriverProgId, comPortProfileName, comPort.ToString());
                 for (int i = 0; i < allSwitches.Count; i++) {
+                    if (allSwitches[i].IsCommand)
+                    {
+                        driverProfile.WriteValue(DriverProgId, $"{allSwitches[i].InternalID}_hide", allSwitches[i].Hide.ToString());
+                        continue;
+                    }
                     if (!allSwitches[i].CanSetName)
                     {
                         continue;
@@ -877,11 +913,10 @@ namespace ASCOM.mytjaAstroPSU.Switch
             switches.Add(new LocalSwitch("GPS Satellite Count", "GPS1_SATELLITE_COUNT", false, 30, 0, 1, 0, false, ENABLE_GPS));
             switches.Add(new LocalSwitch("Gyro X", "GYRO_X", true, -360, 360, 0.0001, 0.0, false, true));
             switches.Add(new LocalSwitch("Gyro Y", "GYRO_Y", true, -360, 360, 0.0001, 0.0, false, true));
-            //switches.Add(new LocalSwitch("Zero", "ZERO", false) { Description = "Upon clicking this switch, the power supply will zero the current sensors. Proceed with caution.", IsCommand = true });
-            //switches.Add(new LocalSwitch("BOOTSEL Mode", "BOOTSEL", false) { Description = "Upon clicking this switch, the power supply will reboot into BOOTSEL mode. Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
-            //switches.Add(new LocalSwitch("Reboot", "REBOOT", false) { Description = "Upon clicking this switch, the power supply will reboot (into normal mode). Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
-            //switches.Add(new LocalSwitch("Reset Core 1", "RESET_CORE", false) { Description = "Upon clicking this switch, the power supply will restart the second core (core 1). Proceed with caution. This can be useful if sensor values aren't updating.", IsCommand = true });
-            //switches.Add(new LocalSwitch("GPS Angle [°]", "GPS1_ANGLE", false, -180, 180, 0.001, 0.0, false, ENABLE_GPS));
+            switches.Add(new LocalSwitch("Zero", "ZERO", false) { Description = "Upon clicking this switch, the power supply will zero the current sensors. Proceed with caution.", IsCommand = true });
+            switches.Add(new LocalSwitch("BOOTSEL Mode", "BOOTSEL", false) { Description = "Upon clicking this switch, the power supply will reboot into BOOTSEL mode. Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
+            switches.Add(new LocalSwitch("Reboot", "REBOOT", false) { Description = "Upon clicking this switch, the power supply will reboot (into normal mode). Proceed with caution. This command WILL turn off all the connected devices.", IsCommand = true });
+            switches.Add(new LocalSwitch("Reset Core 1", "RESET_CORE", false) { Description = "Upon clicking this switch, the power supply will restart the second core (core 1). Proceed with caution. This can be useful if sensor values aren't updating.", IsCommand = true });
             return switches;
         }
 

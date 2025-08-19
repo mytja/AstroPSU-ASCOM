@@ -102,6 +102,7 @@ namespace ASCOM.Simulators
             this.Value = value;
             this.Description = name;
             this.RegularFetch = regularFetch;
+            //this.IsCommand = false;
         }
 
         #endregion constructors
